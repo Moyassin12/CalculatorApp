@@ -125,8 +125,9 @@ public class CalculatorUI {
         expression = replaceTrigFunction(expression, "sin", Math::sin);
         expression = replaceTrigFunction(expression, "cos", Math::cos);
         expression = replaceTrigFunction(expression, "tan", Math::tan);
+  
 
-
+         expression = expression.replaceAll("root\\s*\\(\\s*(\\d+)\\s*,\\s*(\\d+)\\s*\\)", "($2^(1.0/$1))");
 
         while (expression.contains("root(")) {
             try {
