@@ -48,9 +48,7 @@ public class AuthManager {
             } else if (choice == 2) {
                 loggedIn = login();
             }
-            else if (choice==2005){
-                    loggedIn = true;
-            }
+            
             else {
                 System.out.println("Invalid choice, please try again.");
             }
