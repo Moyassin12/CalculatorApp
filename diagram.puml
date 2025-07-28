@@ -1,0 +1,130 @@
+@startuml
+
+class Main {
+    +main(String[] args) : void
+}
+
+class CalculatorUI {
+    -AuthManager authManager
+    -EquationSolver equationSolver
+    -ExpressionEvaluator evaluator
+    -Scanner scanner
+    -HistoryManager historyManager
+    +start() : void
+    -handleExpressionEvaluation() : void
+    -handleEquations() : void
+    -handleLinearSystem() : void
+    -handleGraphExpression() : void
+    -replaceTrigFunction(String, String, DoubleUnaryOperator) : String
+    -areParenthesesBalanced(String) : boolean
+    +showEquationsMenu(Scanner) : int
+    -findClosingParen(String, int) : int
+}
+
+class AuthManager {
+    -String currentUser
+    -UserManager userManager
+    -Scanner scanner
+    +welcomeScreen() : void
+    -signUp() : boolean
+    -isStrongPassword(String) : boolean
+    -login() : boolean
+    +getCurrentUser() : String
+}
+
+class UserManager {
+    -String USERS_FILE
+    -Map<String, String> users
+    -loadUsers() : void
+    +isUsernameTaken(String) : boolean
+    -saveUser(String, String) : void
+    +login(String, String) : boolean
+    +register(String, String) : boolean
+}
+
+class EquationSolver {
+    +solveLinearEquation(double, double) : String
+    +solveQuadraticEquation(double, double, double) : String
+    +solveLinearSystem(double[][]) : double[]
+}
+
+class ExpressionEvaluator {
+    +evaluate(String) : double
+}
+
+class GraphPlotter {
+    -String expression
+    -List<Double> xValues
+    -List<Double> yValues
+    -double zoom
+    -int offsetX
+    -int offsetY
+    -Point dragStart
+    +GraphPlotter(String)
+    -generateData() : void
+    #paintComponent(Graphics) : void
+    -drawGraph(Graphics2D) : void
+    +showGraph(String) : void
+}
+
+class HistoryManager {
+    -String historyFile
+    +HistoryManager(String)
+    +addToHistory(String, double) : void
+    +showHistory() : void
+}
+
+class GradeEntryFrame {
+    -GradeManager gradeManager
+    -JTextArea outputArea
+    +GradeEntryFrame()
+}
+
+class GradeManager {
+    -List<StudentGrade> grades
+    +addGrade(String, double) : void
+    +getAverage() : double
+    +getMax() : double
+    +getMin() : double
+    +getStandardDeviation() : double
+    +getGrades() : List<StudentGrade>
+}
+
+class StudentGrade {
+    -String name
+    -double grade
+    +StudentGrade(String, double)
+    +getName() : String
+    +getGrade() : double
+}
+
+class GradeDistributionChartFrame {
+    -int[] bins
+    +GradeDistributionChartFrame(List<StudentGrade>)
+    -countGrades(List<StudentGrade>) : void
+    -getBinIndex(double) : int
+    -getBinLabel(int) : String
+}
+
+Main --> CalculatorUI : creates
+CalculatorUI --> AuthManager : uses
+CalculatorUI --> EquationSolver : uses
+CalculatorUI --> ExpressionEvaluator : uses
+CalculatorUI --> HistoryManager : creates
+CalculatorUI --> GradeEntryFrame : creates
+CalculatorUI --> GraphPlotter : uses
+
+AuthManager --> UserManager : uses
+HistoryManager --> AuthManager : depends on currentUser
+
+GradeEntryFrame --> GradeManager : uses
+GradeEntryFrame --> GradeDistributionChartFrame : creates
+
+GradeManager --> StudentGrade : manages
+GradeDistributionChartFrame --> StudentGrade : uses
+
+GraphPlotter --|> JPanel : extends
+GradeEntryFrame --|> JFrame : extends
+GradeDistributionChartFrame --|> JFrame : extends
+
+@enduml
