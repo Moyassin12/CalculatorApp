@@ -29,16 +29,30 @@ public class GradeEntryFrame extends JFrame {
 
         addBtn.addActionListener((ActionEvent e) -> {
             String name = nameField.getText().trim();
+            String gradeText = gradeField.getText().trim();
+
+            if (name.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Student name cannot be blank.");
+                return;
+            }
+
             try {
-                double grade = Double.parseDouble(gradeField.getText().trim());
+                double grade = Double.parseDouble(gradeText);
+                if (grade < 0 || grade > 100) {
+                    JOptionPane.showMessageDialog(this, "The mark must be between 0 and 100.");
+                    return;
+                }
+
                 gradeManager.addGrade(name, grade);
                 outputArea.append("✔️ Added: " + name + " → " + grade + "\n");
                 nameField.setText("");
                 gradeField.setText("");
+
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(this, "Invalid grade format.");
+                JOptionPane.showMessageDialog(this, " Please enter a valid number in the mark field.");
             }
         });
+
 
         showStatsBtn.addActionListener(e -> {
             double avg = gradeManager.getAverage();
